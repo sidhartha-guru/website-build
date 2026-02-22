@@ -1,0 +1,81 @@
+---
+import Container from "./Container.astro";
+---
+
+<section style="padding: var(--s-7) 0 var(--s-6) 0;">
+  <Container>
+    <div class="hero card">
+      <div class="copy">
+        <div class="kicker">Professional • Product</div>
+        <h1>Sidhartha — Product Leadership &amp; Life Through Travel</h1>
+        <p class="sub">
+          I lead product with clarity, outcomes, and strong craft — and I document travel as a personal hobby,
+          separate from my professional work.
+        </p>
+
+        <div class="actions">
+          <a class="btn btn-primary" href="#work">View Work</a>
+          <a class="btn" href="/contact">Contact</a>
+          <a class="btn btn-ghost" href="/resume.pdf" target="_blank" rel="noopener">
+            View Resume
+          </a>
+        </div>
+      </div>
+
+      <div class="meta">
+        <div class="metaCard">
+          <div class="label">Focus</div>
+          <div class="value">Director+ Product Leadership</div>
+        </div>
+        <div class="metaCard">
+          <div class="label">Strengths</div>
+          <div class="value">Strategy • Execution • Storytelling</div>
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .hero {
+    padding: var(--s-6);
+    display: grid;
+    grid-template-columns: 1.4fr 0.8fr;
+    gap: var(--s-5);
+    border-radius: calc(var(--radius) + 4px);
+    background:
+      linear-gradient(180deg, rgba(179,90,60,0.06), transparent 55%),
+      var(--surface);
+  }
+  @media (prefers-color-scheme: dark) {
+    .hero {
+      background:
+        linear-gradient(180deg, rgba(179,90,60,0.10), transparent 55%),
+        var(--surface-dark);
+    }
+  }
+
+  .sub { font-size: 18px; margin-top: var(--s-2); max-width: 62ch; }
+
+  .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: var(--s-4); }
+
+  .meta { display: grid; gap: 12px; align-content: start; }
+  .metaCard {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 14px;
+    background: rgba(255,255,255,0.65);
+  }
+  @media (prefers-color-scheme: dark) {
+    .metaCard {
+      border-color: var(--border-dark);
+      background: rgba(255,255,255,0.03);
+    }
+  }
+  .label { font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.8; }
+  .value { font-weight: 650; margin-top: 6px; }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; padding: var(--s-5); }
+  }
+</style>

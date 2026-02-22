@@ -1,0 +1,63 @@
+---
+import Container from "./Container.astro";
+---
+
+<section id="about" style="padding: 0 0 var(--s-6) 0;">
+  <Container>
+    <div class="wrap card">
+      <div class="text">
+        <div class="kicker">About</div>
+        <h2>Product leadership with calm execution.</h2>
+        <p>
+          I work with cross-functional teams to define strategy, ship meaningful improvements, and tell crisp product stories
+          to stakeholders. I care about craft, decision quality, and outcomes.
+        </p>
+        <ul>
+          <li>0→1 and scaling products</li>
+          <li>Clarity in strategy and prioritisation</li>
+          <li>Stakeholder alignment and narrative</li>
+        </ul>
+      </div>
+
+      <div class="photo">
+        <img src="/profilephoto.jpeg" alt="Portrait of Sidhartha" />
+      </div>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .wrap {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: var(--s-5);
+    padding: var(--s-6);
+    align-items: center;
+  }
+
+  ul { margin: var(--s-3) 0 0 18px; color: var(--muted); }
+  @media (prefers-color-scheme: dark) { ul { color: var(--muted-dark); } }
+  li { margin: 8px 0; }
+
+  .photo {
+    display: flex;
+    justify-content: flex-end;
+  }
+  img {
+    width: min(320px, 100%);
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: calc(var(--radius) + 6px);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    filter: saturate(0.98) contrast(1.02);
+  }
+  @media (prefers-color-scheme: dark) {
+    img { border-color: var(--border-dark); box-shadow: none; }
+  }
+
+  @media (max-width: 900px) {
+    .wrap { grid-template-columns: 1fr; padding: var(--s-5); }
+    .photo { justify-content: flex-start; }
+  }
+</style>

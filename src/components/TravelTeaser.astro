@@ -1,0 +1,84 @@
+---
+import Container from "./Container.astro";
+---
+
+<section id="travel" style="padding: 0 0 var(--s-7) 0;">
+  <Container>
+    <div class="travel card">
+      <div>
+        <div class="kicker">Hobby</div>
+        <h2>Travel stories &amp; guides</h2>
+        <p>
+          This is a personal space for travel writing — intentionally separate from my professional portfolio.
+          I’ll publish guides here over the coming months.
+        </p>
+
+        <div class="actions">
+          <a class="btn btn-primary" href="/travel">Explore Travel</a>
+          <a class="btn" href="/travel#subscribe">Get updates</a>
+        </div>
+      </div>
+
+      <div class="tiles">
+        <div class="tile">
+          <div class="tTitle">Guides</div>
+          <div class="tBody">Practical itineraries & recommendations</div>
+        </div>
+        <div class="tile">
+          <div class="tTitle">Stories</div>
+          <div class="tBody">Personal notes, photos, reflections</div>
+        </div>
+        <div class="tile">
+          <div class="tTitle">Services</div>
+          <div class="tBody">Later: travel planning (optional)</div>
+        </div>
+      </div>
+    </div>
+  </Container>
+</section>
+
+<style>
+  .travel {
+    padding: var(--s-6);
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: var(--s-5);
+    border-radius: calc(var(--radius) + 4px);
+    /* a noticeably different vibe from Professional sections */
+    background:
+      radial-gradient(900px 400px at 20% 10%, rgba(179,90,60,0.10), transparent 55%),
+      radial-gradient(900px 400px at 80% 90%, rgba(143,72,49,0.10), transparent 60%),
+      var(--surface);
+  }
+  @media (prefers-color-scheme: dark) {
+    .travel {
+      background:
+        radial-gradient(900px 400px at 20% 10%, rgba(179,90,60,0.18), transparent 55%),
+        radial-gradient(900px 400px at 80% 90%, rgba(143,72,49,0.18), transparent 60%),
+        var(--surface-dark);
+    }
+  }
+
+  .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: var(--s-4); }
+
+  .tiles { display: grid; gap: 12px; align-content: start; }
+  .tile {
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    background: rgba(255,255,255,0.55);
+  }
+  @media (prefers-color-scheme: dark) {
+    .tile {
+      border-color: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.03);
+    }
+  }
+  .tTitle { font-weight: 700; }
+  .tBody { margin-top: 6px; color: var(--muted); }
+  @media (prefers-color-scheme: dark) { .tBody { color: var(--muted-dark); } }
+
+  @media (max-width: 900px) {
+    .travel { grid-template-columns: 1fr; padding: var(--s-5); }
+  }
+</style>

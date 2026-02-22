@@ -6,7 +6,7 @@ import { SITE } from "../config";
 
 const { title, description } = Astro.props;
 
-const pageTitle = title ? `${title} — ${SITE.name}` : SITE.title;
+const pageTitle = title ?? SITE.title;
 const pageDesc = description ?? SITE.description;
 ---
 
@@ -27,7 +27,7 @@ const pageDesc = description ?? SITE.description;
 
   <body>
     <Header />
-    <main style="padding: 16px 0 10px;">
+    <main style="padding: 24px 0 12px;">
       <slot />
     </main>
     <Footer />

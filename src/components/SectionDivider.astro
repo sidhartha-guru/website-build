@@ -1,0 +1,47 @@
+---
+const { label, note } = Astro.props;
+---
+
+<section class="divider" aria-label={label}>
+  <div class="inner">
+    <div class="label">{label}</div>
+    {note ? <div class="note">{note}</div> : null}
+  </div>
+</section>
+
+<style>
+  .divider {
+    padding: var(--s-5) 0;
+    margin: var(--s-6) 0 var(--s-4) 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
+  }
+  @media (prefers-color-scheme: dark) {
+    .divider {
+      border-color: var(--border-dark);
+      background: var(--surface-2-dark);
+    }
+  }
+  .inner {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 var(--s-4);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .label {
+    font-family: var(--font-serif);
+    font-weight: 650;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+  .note {
+    font-size: 14px;
+    color: var(--muted);
+  }
+  @media (prefers-color-scheme: dark) { .note { color: var(--muted-dark); } }
+</style>

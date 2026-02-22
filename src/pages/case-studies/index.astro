@@ -1,40 +1,167 @@
 ---
-import PageLayout from "../../layouts/PageLayout.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Container from "../../components/Container.astro";
 import { getCollection } from "astro:content";
 
-const items = (await getCollection("case-studies")).sort((a: { data: { date: number; }; }, b: { data: { date: number; }; }) =>
-  a.data.date < b.data.date ? 1 : -1
+const allCaseStudies = await getCollection("case-studies");
+
+const sorted = [...allCaseStudies].sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
 
-const featured = items.filter((i: { data: { featured: any; }; }) => i.data.featured);
+const pageTitle = "Case Studies";
+const pageDescription = "A collection of product case studies covering strategy, execution, and outcomes.";
 ---
 
-<PageLayout title="Case Studies" kicker="Selected work">
-  <p class="p">A few examples of strategy → execution → measurable outcomes.</p>
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <section style="padding: var(--s-6) 0 var(--s-7) 0;">
+    <Container>
+      <header class="sectionHeader">
+        <div class="kicker">Professional</div>
+        <h1>Case Studies</h1>
+        <p>
+          A curated set of work focused on product leadership, decision-making, and measurable impact.
+        </p>
+      </header>
 
-  {featured.length > 0 && (
-    <>
-      <div class="hr"></div>
-      <div class="h2">Featured</div>
-      <div style="display:grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px;">
-        {featured.map((c: { slug: any; data: { title: unknown; summary: unknown; }; }) => (
-          <a class="card" style="padding:16px;" href={`/case-studies/${c.slug}`}>
-            <div style="font-weight:700;">{c.data.title}</div>
-            <div class="small" style="margin-top:6px;">{c.data.summary}</div>
+      <div class="grid">
+        {sorted.map((entry) => (
+          <a class="workCard card" href={`/case-studies/${entry.slug}`}>
+            <div class="cardInner">
+              <div class="titleRow">
+                <div class="workTitle">{entry.data.title}</div>
+                {entry.data.featured ? (
+                  <span class="pill">Featured</span>
+                ) : (
+                  <span class="pill">Case study</span>
+                )}
+              </div>
+
+              <div class="workDesc">{entry.data.summary}</div>
+
+              <div class="metaRow">
+                <div class="tags">
+                  {entry.data.tags.slice(0, 4).map((t) => (
+                    <span class="tag">{t}</span>
+                  ))}
+                </div>
+                <span class="arrow">→</span>
+              </div>
+            </div>
           </a>
         ))}
       </div>
-    </>
-  )}
+    </Container>
+  </section>
 
-  <div class="hr"></div>
-  <div class="h2">All</div>
-  <div style="display:grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px;">
-    {items.map((c: { slug: any; data: { title: unknown; summary: unknown; }; }) => (
-      <a class="card" style="padding:16px;" href={`/case-studies/${c.slug}`}>
-        <div style="font-weight:700;">{c.data.title}</div>
-        <div class="small" style="margin-top:6px;">{c.data.summary}</div>
-      </a>
-    ))}
-  </div>
-</PageLayout>
+  <style>
+    .sectionHeader {
+      margin: 0 0 var(--s-5) 0;
+      max-width: 75ch;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .workCard {
+      text-decoration: none !important;
+      display: block;
+      transition: transform 120ms ease, border-color 120ms ease;
+      border-radius: calc(var(--radius) + 2px);
+      overflow: hidden;
+    }
+    .workCard:hover {
+      transform: translateY(-2px);
+      border-color: rgba(179, 90, 60, 0.35);
+    }
+
+    .cardInner {
+      padding: 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .titleRow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .workTitle {
+      font-weight: 750;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .pill {
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.65);
+      white-space: nowrap;
+    }
+    @media (prefers-color-scheme: dark) {
+      .pill {
+        border-color: var(--border-dark);
+        background: rgba(255, 255, 255, 0.03);
+      }
+    }
+
+    .workDesc {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      min-height: 44px;
+    }
+    @media (prefers-color-scheme: dark) {
+      .workDesc { color: var(--muted-dark); }
+    }
+
+    .metaRow {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+    }
+    @media (prefers-color-scheme: dark) {
+      .tag {
+        border-color: var(--border-dark);
+        color: var(--muted-dark);
+      }
+    }
+
+    .arrow {
+      font-weight: 800;
+      opacity: 0.7;
+    }
+
+    @media (max-width: 980px) {
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .grid { grid-template-columns: 1fr; }
+      .workDesc { min-height: unset; }
+    }
+  </style>
+</BaseLayout>

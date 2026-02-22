@@ -1,57 +1,214 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Container from "../components/Container.astro";
-import MetricStrip from "../components/MetricStrip.astro";
-import { LINKS } from "../config";
 
-const metrics = [
-  { value: "5", label: "Cross-functional teams led" },
-  { value: "3-year", label: "Platform transformation vision" },
-  { value: "+500 bps", label: "Revenue impact" },
-  { value: "-6%", label: "Operational cost reduction" },
+import Hero from "../components/Hero.astro";
+import AboutPreview from "../components/AboutPreview.astro";
+import SectionDivider from "../components/SectionDivider.astro";
+import TravelTeaser from "../components/TravelTeaser.astro";
+
+import { getCollection } from "astro:content";
+
+const allCaseStudies = await getCollection("case-studies");
+
+// Sort newest first by required `date` string
+const sorted = [...allCaseStudies].sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+
+// Prefer featured first (still in date order), then fill remainder
+const featuredFirst = [
+  ...sorted.filter((c) => c.data.featured),
+  ...sorted.filter((c) => !c.data.featured),
 ];
+
+// Show up to 6 on home
+const featured = featuredFirst.slice(0, 6);
+
+const pageTitle = "Sidhartha — Product Leadership & Life Through Travel";
+const pageDescription =
+  "Product leadership portfolio and case studies, plus a separate hobby space for travel stories and guides.";
 ---
 
-<BaseLayout>
-  <Container>
-    <div class="grid2">
-      <section>
-        <div class="kicker">Group Product Manager · Booking.com</div>
-        <h1 class="h1">Product leader building AI-powered systems at scale.</h1>
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <!-- 1) HERO -->
+  <Hero />
 
-        <p class="p">
-          I lead multi-team platforms that reduce customer friction and create operational leverage —
-          aligning stakeholders around clear product visions and shipping systems that compound.
+  <!-- 2) FEATURED WORK -->
+  <section id="work" style="padding: 0 0 var(--s-7) 0;">
+    <Container>
+      <header class="sectionHeader">
+        <div class="kicker">Professional</div>
+        <h2>Featured work</h2>
+        <p>
+          A selection of case studies focused on product strategy, execution, and measurable outcomes.
         </p>
+      </header>
 
-        <div style="display:flex; gap: 10px; flex-wrap: wrap; margin-top: 14px;">
-          <a class="btn btnPrimary" href="/case-studies">View case studies</a>
-          <a class="btn" href="/about">How I lead</a>
-          <a class="btn" href="/contact">Contact</a>
-          <a class="btn" href={LINKS.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
-        </div>
+      <div class="grid">
+        {featured.map((entry) => (
+          <a class="workCard card" href={`/case-studies/${entry.slug}`}>
+            <div class="cardInner">
+              <div class="titleRow">
+                <div class="workTitle">{entry.data.title}</div>
+                {entry.data.featured ? (
+                  <span class="pill">Featured</span>
+                ) : (
+                  <span class="pill">Case study</span>
+                )}
+              </div>
 
-        <div style="margin-top: 16px;">
-          <MetricStrip metrics={metrics} />
-        </div>
-      </section>
+              <div class="workDesc">{entry.data.summary}</div>
 
-      <aside class="card" style="padding: 16px;">
-        <div class="h2">Focus</div>
-        <div class="small" style="margin-top: 8px;">
-          Automation-first service models · Personalization platforms · Scalable operating rhythms ·
-          Cross-functional alignment · Team building
-        </div>
+              <div class="metaRow">
+                <div class="tags">
+                  {entry.data.tags.slice(0, 3).map((t) => (
+                    <span class="tag">{t}</span>
+                  ))}
+                </div>
+                <span class="arrow">→</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
 
-        <div class="hr"></div>
+      <div class="moreRow">
+        <a class="btn" href="/case-studies">View all case studies</a>
+        <a class="btn btn-ghost" href="/resume.pdf" target="_blank" rel="noopener">
+          View Resume
+        </a>
+      </div>
+    </Container>
+  </section>
 
-        <div class="h2">Featured</div>
-        <ul class="small" style="margin: 10px 0 0; padding-left: 18px;">
-          <li><a href="/case-studies">Connected CS vision &amp; automation</a></li>
-          <li><a href="/case-studies">Web personalization platform</a></li>
-          <li><a href="/case-studies">0→1 marketplace growth</a></li>
-        </ul>
-      </aside>
-    </div>
-  </Container>
+  <!-- 3) ABOUT (with photo) -->
+  <AboutPreview />
+
+  <!-- 4) HARD SEPARATION -->
+  <SectionDivider
+    label="Hobby / Travel"
+    note="This is separate from my professional portfolio."
+  />
+
+  <!-- 5) HOBBY -->
+  <TravelTeaser />
+
+  <style>
+    .sectionHeader {
+      margin: 0 0 var(--s-5) 0;
+      max-width: 70ch;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .workCard {
+      text-decoration: none !important;
+      display: block;
+      transition: transform 120ms ease, border-color 120ms ease;
+      border-radius: calc(var(--radius) + 2px);
+      overflow: hidden;
+    }
+    .workCard:hover {
+      transform: translateY(-2px);
+      border-color: rgba(179, 90, 60, 0.35);
+    }
+
+    .cardInner {
+      padding: 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .titleRow {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .workTitle {
+      font-weight: 750;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .pill {
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.65);
+      white-space: nowrap;
+    }
+    @media (prefers-color-scheme: dark) {
+      .pill {
+        border-color: var(--border-dark);
+        background: rgba(255, 255, 255, 0.03);
+      }
+    }
+
+    .workDesc {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      min-height: 44px;
+    }
+    @media (prefers-color-scheme: dark) {
+      .workDesc { color: var(--muted-dark); }
+    }
+
+    .metaRow {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+    }
+    @media (prefers-color-scheme: dark) {
+      .tag {
+        border-color: var(--border-dark);
+        color: var(--muted-dark);
+      }
+    }
+
+    .arrow {
+      font-weight: 800;
+      opacity: 0.7;
+    }
+
+    .moreRow {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: var(--s-5);
+    }
+
+    @media (max-width: 980px) {
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .grid { grid-template-columns: 1fr; }
+      .workDesc { min-height: unset; }
+    }
+  </style>
 </BaseLayout>
