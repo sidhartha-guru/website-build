@@ -1,0 +1,40 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+import { getCollection } from "astro:content";
+
+const items = (await getCollection("case-studies")).sort((a: { data: { date: number; }; }, b: { data: { date: number; }; }) =>
+  a.data.date < b.data.date ? 1 : -1
+);
+
+const featured = items.filter((i: { data: { featured: any; }; }) => i.data.featured);
+---
+
+<PageLayout title="Case Studies" kicker="Selected work">
+  <p class="p">A few examples of strategy → execution → measurable outcomes.</p>
+
+  {featured.length > 0 && (
+    <>
+      <div class="hr"></div>
+      <div class="h2">Featured</div>
+      <div style="display:grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px;">
+        {featured.map((c: { slug: any; data: { title: unknown; summary: unknown; }; }) => (
+          <a class="card" style="padding:16px;" href={`/case-studies/${c.slug}`}>
+            <div style="font-weight:700;">{c.data.title}</div>
+            <div class="small" style="margin-top:6px;">{c.data.summary}</div>
+          </a>
+        ))}
+      </div>
+    </>
+  )}
+
+  <div class="hr"></div>
+  <div class="h2">All</div>
+  <div style="display:grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px;">
+    {items.map((c: { slug: any; data: { title: unknown; summary: unknown; }; }) => (
+      <a class="card" style="padding:16px;" href={`/case-studies/${c.slug}`}>
+        <div style="font-weight:700;">{c.data.title}</div>
+        <div class="small" style="margin-top:6px;">{c.data.summary}</div>
+      </a>
+    ))}
+  </div>
+</PageLayout>

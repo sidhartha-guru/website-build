@@ -1,0 +1,29 @@
+---
+interface Metric {
+  value: string;
+  label: string;
+}
+
+const { metrics } = Astro.props as { metrics: Metric[] };
+---
+
+<div class="card" style="padding: 18px;">
+  <div style="display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px;">
+    {metrics.map((m) => (
+      <div>
+        <div style="font-weight:700; font-size:1.1rem;">
+          {m.value}
+        </div>
+        <div class="small">{m.label}</div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  @media (max-width: 880px) {
+    div[style*="repeat(4"] {
+      grid-template-columns: repeat(2, minmax(0,1fr)) !important;
+    }
+  }
+</style>

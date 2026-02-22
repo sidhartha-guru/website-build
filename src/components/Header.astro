@@ -1,0 +1,43 @@
+---
+import Container from "./Container.astro";
+import { SITE, LINKS } from "../config";
+
+const { pathname } = Astro.url;
+
+const nav = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/case-studies", label: "Case Studies" },
+  { href: "/contact", label: "Contact" },
+];
+
+const isActive = (href: string) =>
+  href === "/" ? pathname === "/" : pathname.startsWith(href);
+---
+
+<header style="padding: 24px 0 12px;">
+  <Container>
+    <div style="display:flex; align-items:center; justify-content:space-between; gap: 16px; flex-wrap:wrap;">
+      
+      <a href="/" style="text-decoration:none; font-weight:600; font-size:1.05rem;">
+        {SITE.name}
+        <span class="badge" style="margin-left:10px;">Product Leader</span>
+      </a>
+
+      <nav style="display:flex; gap: 10px; flex-wrap: wrap;">
+        {nav.map((item) => (
+          <a
+            href={item.href}
+            class="btn"
+            style={isActive(item.href) ? "border-color: rgba(125, 211, 252, 0.4);" : ""}
+          >
+            {item.label}
+          </a>
+        ))}
+        <a class="btn" href={LINKS.linkedin} target="_blank" rel="noreferrer">
+          LinkedIn
+        </a>
+      </nav>
+    </div>
+  </Container>
+</header>

@@ -1,0 +1,57 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/Container.astro";
+import MetricStrip from "../components/MetricStrip.astro";
+import { LINKS } from "../config";
+
+const metrics = [
+  { value: "5", label: "Teams led" },
+  { value: "3-year", label: "Platform vision" },
+  { value: "500 bps", label: "Booking uplift" },
+  { value: "6%", label: "Ops cost reduction" },
+];
+---
+
+<BaseLayout>
+  <Container>
+    <div class="grid2">
+      <section>
+        <div class="kicker">Group Product Manager · Booking.com</div>
+        <h1 class="h1">Product leader building AI-powered systems at scale.</h1>
+
+        <p class="p">
+          I lead multi-team platforms that reduce customer friction and create operational leverage —
+          aligning stakeholders around clear product visions and shipping systems that compound.
+        </p>
+
+        <div style="display:flex; gap: 10px; flex-wrap: wrap; margin-top: 14px;">
+          <a class="btn btnPrimary" href="/case-studies">View case studies</a>
+          <a class="btn" href="/about">How I lead</a>
+          <a class="btn" href="/contact">Contact</a>
+          <a class="btn" href={LINKS.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
+        </div>
+
+        <div style="margin-top: 16px;">
+          <MetricStrip metrics={metrics} />
+        </div>
+      </section>
+
+      <aside class="card" style="padding: 16px;">
+        <div class="h2">Focus</div>
+        <div class="small" style="margin-top: 8px;">
+          Automation-first service models · Personalization platforms · Scalable operating rhythms ·
+          Cross-functional alignment · Team building
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="h2">Featured</div>
+        <ul class="small" style="margin: 10px 0 0; padding-left: 18px;">
+          <li><a href="/case-studies">Connected CS vision &amp; automation</a></li>
+          <li><a href="/case-studies">Web personalization platform</a></li>
+          <li><a href="/case-studies">0→1 marketplace growth</a></li>
+        </ul>
+      </aside>
+    </div>
+  </Container>
+</BaseLayout>

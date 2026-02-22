@@ -1,0 +1,24 @@
+---
+import PageLayout from "../../layouts/PageLayout.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("case-studies");
+  return entries.map((entry: CollectionEntry<"case-studies">) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<PageLayout title={entry.data.title} kicker="Case study" description={entry.data.summary}>
+  <p class="p">{entry.data.summary}</p>
+  <div class="hr"></div>
+
+  <article class="card" style="padding: 16px;">
+    <Content />
+  </article>
+</PageLayout>

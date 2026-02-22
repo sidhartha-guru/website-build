@@ -1,0 +1,18 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import Container from "../components/Container.astro";
+
+const { title, description, kicker } = Astro.props as {
+  title: string;
+  description?: string;
+  kicker?: string;
+};
+---
+
+<BaseLayout title={title} description={description}>
+  <Container>
+    {kicker && <div class="kicker">{kicker}</div>}
+    <h1 class="h1">{title}</h1>
+    <slot />
+  </Container>
+</BaseLayout>
